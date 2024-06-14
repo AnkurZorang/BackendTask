@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 @Repository
 public interface MessageRepository extends ReactiveMongoRepository<MessagePOJO, String> {
-    // You can define additional methods if needed
+
     @Tailable
     Flux<MessagePOJO> findWithTailableCursorByUniqueId(String uniqueId);
 }

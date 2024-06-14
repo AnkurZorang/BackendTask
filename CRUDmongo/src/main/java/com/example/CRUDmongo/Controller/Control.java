@@ -1,8 +1,8 @@
 package com.example.CRUDmongo.Controller;
 
-import com.example.CRUDmongo.Service.service;
+import com.example.CRUDmongo.Service.MyService;
 import com.example.CRUDmongo.model.MessagePOJO;
-import com.example.CRUDmongo.model.ModelDTO;
+import com.example.CRUDmongo.model.modelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,12 +16,12 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class Control {
 
-
- private final service serve;
+ @Autowired
+ private final MyService serve;
  private static final Logger logger = LoggerFactory.getLogger(Control.class);
 
- @Autowired
-      public Control(service serve) {
+
+      public Control(MyService serve) {
 
          this.serve=serve;
         }
@@ -47,7 +47,7 @@ public class Control {
 
  @PostMapping("/chat")
  @ResponseStatus(HttpStatus.CREATED)
- public ResponseEntity<String> sendChat(@RequestBody ModelDTO Message){
+ public ResponseEntity<String> sendChat(@RequestBody modelDTO Message){
   serve.newChat(Message);
   return ResponseEntity.status(HttpStatus.OK).body("Message sent successfully");
  }
