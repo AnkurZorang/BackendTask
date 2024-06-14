@@ -15,7 +15,7 @@ public class MessagePOJO {
         private String sender;
         @CreatedDate
         private Instant createdDate = Instant.now();
-        private String UniqueId;
+        private String uniqueId;
 
     public String getId() {
         return id;
@@ -50,10 +50,10 @@ public class MessagePOJO {
     }
 
     public String getUniqueId() {
-        return UniqueId;
+        return uniqueId;
     }
 
-    public void setUniqueId(String uniqueId) {
-        UniqueId = uniqueId;
+    public void setUniqueId(String UniqueId) {
+        uniqueId = UniqueId;
     }
 }

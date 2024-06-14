@@ -9,14 +9,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 public class Control {
 
 
  private final service serve;
+ private static final Logger logger = LoggerFactory.getLogger(Control.class);
 
  @Autowired
       public Control(service serve) {
@@ -44,13 +46,18 @@ public class Control {
  }
 
  @PostMapping("/chat")
+ @ResponseStatus(HttpStatus.CREATED)
  public ResponseEntity<String> sendChat(@RequestBody ModelDTO Message){
   serve.newChat(Message);
   return ResponseEntity.status(HttpStatus.OK).body("Message sent successfully");
  }
 
  @GetMapping(value = "/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
- public Flux<MessagePOJO> streamMessages(@RequestBody String UniqueId) {
-  return serve.streamMessages(UniqueId);
+ public Flux<MessagePOJO> streamMessages(@RequestParam String uniqueId) {
+  logger.info("Starting to stream messages");
+  return serve.streamMessages(uniqueId)
+          .doOnNext(message -> logger.info("Streaming message: {}", message))
+          .doOnError(error -> logger.error("Error streaming messages", error));
+
  }
 }
